@@ -1,7 +1,8 @@
 An extensible, defense‑in‑depth Intrusion Detection & Prevention module for Magento 2.
 
 #v1.1
-Fix ACL Permissions for events and blocks
+Fix: Fix ACL Permissions for events and blocks
+New: Added full admin grids showing events and blocked IP's
 
 #v1.0
 Initial Release

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<event name="customer_login_failed">
+<observer name="merlin_id_customer_login_failed" instance="Merlin\\IntrusionDetection\\Observer\\CustomerLoginFailed"/>
+</event>
+<event name="admin_user_authenticate_after">
+<observer name="merlin_id_admin_login_failed" instance="Merlin\\IntrusionDetection\\Observer\\AdminLoginFailed"/>
+</event>
+</config>

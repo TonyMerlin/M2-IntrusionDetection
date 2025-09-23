@@ -1,5 +1,11 @@
 An extensible, defense‑in‑depth Intrusion Detection & Prevention module for Magento 2.
 
+#v1.1
+Fix ACL Permissions for events and blocks
+
+#v1.0
+Initial Release
+
 My initial release focuses on safe, composable primitives: request inspection, brute‑force throttling, IP blocking, honeypots, event logging, and admin/system configuration. It’s built to be production‑ready but conservative by default. You can extend each detector via DI.
 
 # Setup & usage

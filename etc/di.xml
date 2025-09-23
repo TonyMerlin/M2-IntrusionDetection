@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!-- FrontController plugin to inspect every request -->
+<type name="Magento\\Framework\\App\\FrontControllerInterface">
+<plugin name="merlin_intrusion_guard" type="Merlin\\IntrusionDetection\\Plugin\\FrontController\\IntrusionGuard" sortOrder="10"/>
+</type>
+
+
+<!-- Register default detectors -->
+<type name="Merlin\\IntrusionDetection\\Plugin\\FrontController\\IntrusionGuard">
+<arguments>
+<argument name="detectors" xsi:type="array">
+<item name="ipBlock" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\IpBlockDetector</item>
+<item name="rate" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\RateLimiterDetector</item>
+<item name="path" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\PathAnomalyDetector</item>
+<item name="ua" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\UserAgentDetector</item>
+<item name="query" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\QueryRuleDetector</item>
+<item name="honeypot" xsi:type="object">Merlin\\IntrusionDetection\\Model\\Detection\\HoneypotDetector</item>
+</argument>
+</arguments>
+</type>
+
+
+<!-- Console commands -->
+<type name="Symfony\\Component\\Console\\Application">
+<arguments>
+<argument name="commands" xsi:type="array">
+<item name="merlin_id_block" xsi:type="object">Merlin\\IntrusionDetection\\Console\\BlockIpCommand</item>
+<item name="merlin_id_unblock" xsi:type="object">Merlin\\IntrusionDetection\\Console\\UnblockIpCommand</item>
+<item name="merlin_id_list" xsi:type="object">Merlin\\IntrusionDetection\\Console\\ListBlockedCommand</item>
+</argument>
+</arguments>
+</type>
+</config>

@@ -1,27 +1,28 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
   <default>
-  <merlin_intrusion>
-  <general>
-    <enabled>1</enabled>
-      <mode>detect</mode> <!-- detect|block -->
-  <log_details>1</log_details>
-  </general>
+    <merlin_intrusion>
+      <general>
+        <enabled>1</enabled>
+        <mode>detect</mode>
+        <log_details>1</log_details>
+      </general>
       <ratelimit>
-      <enabled>1</enabled>
-      <window_seconds>60</window_seconds>
-      <max_requests>120</max_requests>
-      <burst_factor>2</burst_factor>
-    </ratelimit>
+        <enabled>1</enabled>
+        <window_seconds>60</window_seconds>
+        <max_requests>120</max_requests>
+        <burst_factor>2</burst_factor>
+      </ratelimit>
       <bruteforce>
-      <enabled>1</enabled>
-      <max_failures>5</max_failures>
-      <lock_minutes>30</lock_minutes>
+        <enabled>1</enabled>
+        <max_failures>5</max_failures>
+        <lock_minutes>30</lock_minutes>
       </bruteforce>
-        <honeypot>
+      <honeypot>
         <enabled>1</enabled>
         <url>merlin/honeypot</url>
-        </honeypot>
+      </honeypot>
     </merlin_intrusion>
   </default>
 </config>
+

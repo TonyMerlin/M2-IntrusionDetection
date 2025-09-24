@@ -3,8 +3,9 @@ An extensible, defense‑in‑depth Intrusion Detection & Prevention module for 
 #v1.1
 
 Fix: Fix ACL Permissions for events and blocks
+Fix: Safety fix: the IDS no longer blocks inside the **adminhtml** area to prevent lockouts
 
-New: Added full admin grids showing events and blocked IP's
+New: Added Full Admin Grids for **Intrusion Events** and **Blocked IPs** (with CRUD + mass delete).
 
 #v1.0
 

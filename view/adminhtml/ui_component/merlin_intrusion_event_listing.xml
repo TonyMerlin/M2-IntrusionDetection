@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+  <argument name="data" xsi:type="array">
+    <item name="js_config" xsi:type="array">
+      <item name="provider" xsi:type="string">merlin_intrusion_event_listing.merlin_intrusion_event_listing_data_source</item>
+      <item name="deps" xsi:type="string">merlin_intrusion_event_listing.merlin_intrusion_event_listing_data_source</item>
+    </item>
+    <item name="spinner" xsi:type="string">columns</item>
+  </argument>
+  <dataSource name="merlin_intrusion_event_listing_data_source">
+    <argument name="dataProvider" xsi:type="configurableObject">
+      <argument name="class" xsi:type="string">Merlin\IntrusionDetection\Ui\DataProvider\Event\ListingDataProvider</argument>
+      <argument name="name" xsi:type="string">merlin_intrusion_event_listing_data_source</argument>
+      <argument name="primaryFieldName" xsi:type="string">event_id</argument>
+      <argument name="requestFieldName" xsi:type="string">event_id</argument>
+    </argument>
+    <argument name="data" xsi:type="array">
+      <item name="js_config" xsi:type="array"><item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item></item>
+    </argument>
+  </dataSource>
+  <columns name="columns">
+    <selectionsColumn name="ids"/>
+    <column name="event_id"><settings><filter>text</filter><label translate="true">ID</label><sorting>desc</sorting></settings></column>
+    <column name="created_at"><settings><filter>dateRange</filter><dataType>date</dataType><label translate="true">Created At (UTC)</label></settings></column>
+    <column name="ip"><settings><filter>text</filter><label translate="true">IP</label></settings></column>
+    <column name="path"><settings><filter>text</filter><label translate="true">Path</label></settings></column>
+    <column name="user_agent"><settings><filter>text</filter><label translate="true">User Agent</label></settings></column>
+    <column name="detector"><settings><filter>text</filter><label translate="true">Detector</label></settings></column>
+    <column name="severity"><settings><filter>text</filter><label translate="true">Severity</label></settings></column>
+    <column name="details"><settings><filter>text</filter><label translate="true">Details</label></settings></column>
+    <actionsColumn name="actions" class="Magento\Ui\Component\Listing\Columns\Actions"><settings><indexField>event_id</indexField><label translate="true">Actions</label></settings></actionsColumn>
+  </columns>
+  <massaction name="listing_massaction">
+    <action name="delete"><settings><confirm><message translate="true">Delete selected events?</message></confirm><url path="merlin_id/event/massDelete"/><type>delete</type><label translate="true">Delete</label></settings></action>
+  </massaction>
+</listing>

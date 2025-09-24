@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+  <argument name="data" xsi:type="array">
+    <item name="js_config" xsi:type="array">
+      <item name="provider" xsi:type="string">merlin_blocked_ip_listing.merlin_blocked_ip_listing_data_source</item>
+      <item name="deps" xsi:type="string">merlin_blocked_ip_listing.merlin_blocked_ip_listing_data_source</item>
+    </item>
+    <item name="spinner" xsi:type="string">columns</item>
+    <item name="buttons" xsi:type="array">
+      <item name="add" xsi:type="array">
+        <item name="name" xsi:type="string">add</item>
+        <item name="label" xsi:type="string" translate="true">Add Blocked IP</item>
+        <item name="class" xsi:type="string">primary</item>
+        <item name="url" xsi:type="string">*/*/new</item>
+      </item>
+    </item>
+  </argument>
+  <dataSource name="merlin_blocked_ip_listing_data_source">
+    <argument name="dataProvider" xsi:type="configurableObject">
+      <argument name="class" xsi:type="string">Merlin\IntrusionDetection\Ui\DataProvider\BlockedIp\ListingDataProvider</argument>
+      <argument name="name" xsi:type="string">merlin_blocked_ip_listing_data_source</argument>
+      <argument name="primaryFieldName" xsi:type="string">block_id</argument>
+      <argument name="requestFieldName" xsi:type="string">block_id</argument>
+    </argument>
+    <argument name="data" xsi:type="array">
+      <item name="js_config" xsi:type="array"><item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item></item>
+    </argument>
+  </dataSource>
+  <columns name="columns">
+    <selectionsColumn name="ids"/>
+    <column name="block_id"><settings><filter>text</filter><label translate="true">ID</label><sorting>desc</sorting></settings></column>
+    <column name="ip"><settings><filter>text</filter><label translate="true">IP</label></settings></column>
+    <column name="reason"><settings><filter>text</filter><label translate="true">Reason</label></settings></column>
+    <column name="created_at"><settings><filter>dateRange</filter><dataType>date</dataType><label translate="true">Created At (UTC)</label></settings></column>
+    <column name="expires_at"><settings><filter>dateRange</filter><dataType>date</dataType><label translate="true">Expires At (UTC)</label></settings></column>
+    <actionsColumn name="actions" class="Magento\Ui\Component\Listing\Columns\Actions">
+      <settings><indexField>block_id</indexField><label translate="true">Actions</label></settings>
+      <actions>
+        <action name="edit"><settings><label translate="true">Edit</label><urlPath>merlin_id/block/edit</urlPath><paramName>block_id</paramName></settings></action>
+        <action name="delete"><settings><label translate="true">Delete</label><urlPath>merlin_id/block/delete</urlPath><paramName>block_id</paramName><confirm><message translate="true">Delete this block?</message></confirm></settings></action>
+      </actions>
+    </actionsColumn>
+  </columns>
+  <massaction name="listing_massaction">
+    <action name="delete"><settings><confirm><message translate="true">Delete selected blocks?</message></confirm><url path="merlin_id/block/massDelete"/><type>delete</type><label translate="true">Delete</label></settings></action>
+  </massaction>
+</listing>

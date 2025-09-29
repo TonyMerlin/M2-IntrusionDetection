@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
   <system>
     <section id="merlin_intrusion" translate="label" type="text" sortOrder="950" showInDefault="1" showInWebsite="1" showInStore="1">
       <label>Merlin Intrusion Detection</label>
@@ -13,13 +14,8 @@
         </field>
         <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
           <label>Action Mode</label>
-          <comment>Detect-only or Block request on hit</comment>
-          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-          <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
-        </field>
-        <field id="log_details" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Log Request Details</label>
-          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+          <source_model>Merlin\IntrusionDetection\Model\Config\Source\Mode</source_model>
+          <comment>Detect = log only; Block = 403 + auto-block on high/critical.</comment>
         </field>
       </group>
       <group id="ratelimit" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -30,36 +26,22 @@
         </field>
         <field id="window_seconds" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
           <label>Window (seconds)</label>
+          <validate>validate-number</validate>
         </field>
         <field id="max_requests" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Max Requests / Window / IP</label>
-        </field>
-        <field id="burst_factor" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Burst Factor</label>
+          <label>Max Requests per Window per IP</label>
+          <validate>validate-number</validate>
         </field>
       </group>
-      <group id="bruteforce" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-        <label>Brute‑force Protection</label>
-        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Enable</label>
-          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-        </field>
-        <field id="max_failures" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Max Failed Logins</label>
-        </field>
-        <field id="lock_minutes" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Lock Duration (minutes)</label>
-        </field>
-      </group>
-      <group id="honeypot" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+      <group id="honeypot" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
         <label>Honeypot</label>
         <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
           <label>Enable</label>
           <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
         </field>
         <field id="url" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Honeypot URL</label>
-          <comment>Hidden bait endpoint to trap bots</comment>
+          <label>Honeypot URL Path</label>
+          <comment>Example: /_hp</comment>
         </field>
       </group>
     </section>

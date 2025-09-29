@@ -1,29 +1,25 @@
 <?php
-namespace Merlin\IntrusionDetection\Console;
+declare(strict_types=1);
 
+namespace Merlin\IntrusionDetection\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Merlin\IntrusionDetection\Model\BlockService;
+use Merlin\IntrusionDetection\Api\BlockServiceInterface;
 
-class BlockIpCommand extends Command
-{
-    protected static $defaultName = 'merlin:id:block-ip';
-    public function __construct(private BlockService $svc, string $name = null) { parent::__construct($name); }
-
-    protected function configure()
-    {
-        $this->setDescription('Block an IP')
+class BlockIpCommand extends Command {
+    private $svc;
+    public function __construct(BlockServiceInterface $svc){ $this->svc=$svc; parent::__construct(); }
+    protected function configure(){
+        $this->setName('merlin:ids:block')->setDescription('Block an IP')
             ->addArgument('ip', InputArgument::REQUIRED)
-            ->addArgument('minutes', InputArgument::OPTIONAL, 'Temporary block minutes', 60)
-            ->addArgument('reason', InputArgument::OPTIONAL, 'Reason', 'manual');
+            ->addArgument('minutes', InputArgument::OPTIONAL, 'Duration minutes', '60');
+        parent::configure();
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->svc->block($input->getArgument('ip'), $input->getArgument('reason'), (int)$input->getArgument('minutes'));
-        $output->writeln('<info>Blocked</info>');
+    protected function execute(InputInterface $in, OutputInterface $out): int {
+        $ip=(string)$in->getArgument('ip'); $minutes=(int)$in->getArgument('minutes');
+        $this->svc->block($ip, 'CLI', $minutes); $out->writeln("<info>Blocked {$ip} for {$minutes} minutes.</info>");
         return Command::SUCCESS;
     }
 }

@@ -1,44 +1,39 @@
 <?php
+declare(strict_types=1);
+
 namespace Merlin\IntrusionDetection\Model;
 
-use Magento\Framework\Stdlib\DateTime\DateTime;
+use Merlin\IntrusionDetection\Api\BlockServiceInterface;
+use Merlin\IntrusionDetection\Model\ResourceModel\BlockedIp as BlockedIpResource;
 use Merlin\IntrusionDetection\Model\BlockedIpFactory;
-use Merlin\IntrusionDetection\Model\ResourceModel\BlockedIp as BlockedIpRes;
-use Merlin\IntrusionDetection\Model\ResourceModel\BlockedIp\CollectionFactory as BlockedCollectionFactory;
 
-class BlockService
-{
-    public function __construct(
-        private BlockedIpFactory $blockedFactory,
-        private BlockedIpRes $blockedRes,
-        private BlockedCollectionFactory $collectionFactory,
-        private DateTime $date
-    ) {}
-
-    public function isBlocked(string $ip): bool
-    {
-        $col = $this->collectionFactory->create();
-        $col->addFieldToFilter('ip', $ip);
-        $col->addFieldToFilter(['expires_at', 'expires_at'], [['null' => true], ['gteq' => $this->date->gmtDate()]]);
-        return (bool)$col->getSize();
+class BlockService implements BlockServiceInterface {
+    private $blockedIpFactory; private $blockedIpResource;
+    public function __construct(BlockedIpFactory $blockedIpFactory, BlockedIpResource $blockedIpResource){ $this->blockedIpFactory=$blockedIpFactory; $this->blockedIpResource=$blockedIpResource; }
+    public function block(string $ip, string $reason = null, int $minutes = 60): void {
+        $model = $this->blockedIpFactory->create();
+        $this->blockedIpResource->load($model, $ip, 'ip');
+        $expires = $minutes > 0 ? (new \DateTime('now', new \DateTimeZone('UTC')))->modify('+' . $minutes . ' minutes')->format('Y-m-d H:i:s') : null;
+        $model->setData(['ip'=>$ip,'reason'=>$reason,'expires_at'=>$expires]);
+        $this->blockedIpResource->save($model);
     }
-
-    public function block(string $ip, ?string $reason = null, ?int $minutes = null): void
-    {
-        $model = $this->blockedFactory->create();
-        $model->setData(['ip' => $ip, 'reason' => $reason]);
-        if ($minutes) {
-            $model->setData('expires_at', $this->date->gmtDate('Y-m-d H:i:s', strtotime("+{$minutes} minutes")));
-        }
-        try { $this->blockedRes->save($model); } catch (\Exception $e) { /* ignore duplicates */ }
+    public function unblock(string $ip): void {
+        $model = $this->blockedIpFactory->create();
+        $this->blockedIpResource->load($model, $ip, 'ip');
+        if ($model->getId()) { $this->blockedIpResource->delete($model); }
     }
-
-    public function unblock(string $ip): int
-    {
-        $col = $this->collectionFactory->create();
-        $col->addFieldToFilter('ip', $ip);
-        $count = 0;
-        foreach ($col as $item) { $this->blockedRes->delete($item); $count++; }
-        return $count;
+    public function isBlocked(string $ip): bool {
+        $model = $this->blockedIpFactory->create();
+        $this->blockedIpResource->load($model, $ip, 'ip');
+        if (!$model->getId()) return false;
+        $expires = $model->getData('expires_at');
+        if ($expires && strtotime($expires) < time()) { $this->blockedIpResource->delete($model); return false; }
+        return true;
+    }
+    public function listBlocks(): array {
+        $col = $this->blockedIpFactory->create()->getCollection();
+        $out = [];
+        foreach ($col as $m) { $out[] = ['ip'=>(string)$m->getData('ip'),'reason'=>$m->getData('reason'),'expires_at'=>$m->getData('expires_at'),'created_at'=>$m->getData('created_at')]; }
+        return $out;
     }
 }

@@ -1,5 +1,8 @@
 An extensible, defense‑in‑depth Intrusion Detection & Prevention module for Magento 2.
 
+#v2.0.0
+Refactor extension to fix grids not loading
+
 #V1.1.1
 
 Fix: On re-install we see "SQLSTATE[42000]: Syntax error or access violation: 1061 Duplicate key name 'MERLIN_INTRUSION_EVENT_IP', query was: ALTER TABLE merlin_intrusion_event ADD INDEX MERLIN_INTRUSION_EVENT_IP (ip), ADD INDEX MERLIN_INTRUSION_EVENT_CREATED_AT (created_at)"

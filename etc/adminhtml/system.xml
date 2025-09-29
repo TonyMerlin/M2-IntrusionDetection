@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
   <system>
     <section id="merlin_intrusion" translate="label" type="text" sortOrder="950" showInDefault="1" showInWebsite="1" showInStore="1">
       <label>Merlin Intrusion Detection</label>
@@ -13,12 +14,34 @@
         </field>
         <field id="mode" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
           <label>Action Mode</label>
-          <comment>Detect-only or actively Block on hit</comment>
           <source_model>Merlin\IntrusionDetection\Model\Config\Source\Mode</source_model>
+          <comment>Detect = log only; Block = 403 + auto-block on high/critical.</comment>
         </field>
-        <field id="log_details" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-          <label>Log Request Details</label>
+      </group>
+      <group id="ratelimit" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>Rate Limiting</label>
+        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>Enable</label>
           <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+        <field id="window_seconds" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>Window (seconds)</label>
+          <validate>validate-number</validate>
+        </field>
+        <field id="max_requests" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>Max Requests per Window per IP</label>
+          <validate>validate-number</validate>
+        </field>
+      </group>
+      <group id="honeypot" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>Honeypot</label>
+        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>Enable</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+        </field>
+        <field id="url" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>Honeypot URL Path</label>
+          <comment>Example: /_hp</comment>
         </field>
       </group>
     </section>

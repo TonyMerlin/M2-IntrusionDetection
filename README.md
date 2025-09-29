@@ -1,5 +1,25 @@
 An extensible, defense‑in‑depth Intrusion Detection & Prevention module for Magento 2.
 
+#v2.0.0
+Refactor extension to fix grids not loading
+
+#V1.1.1
+
+Fix: On re-install we see "SQLSTATE[42000]: Syntax error or access violation: 1061 Duplicate key name 'MERLIN_INTRUSION_EVENT_IP', query was: ALTER TABLE merlin_intrusion_event ADD INDEX MERLIN_INTRUSION_EVENT_IP (ip), ADD INDEX MERLIN_INTRUSION_EVENT_CREATED_AT (created_at)"
+SQLSTATE[42000]: Syntax error or access violation: 1061 Duplicate key name 'MERLIN_BLOCKED_IP_IP', query was: ALTER TABLE merlin_blocked_ip ADD INDEX MERLIN_BLOCKED_IP_IP (ip), ADD INDEX MERLIN_BLOCKED_IP_EXPIRES_AT (expires_at)
+
+#v1.1.0
+
+Fix: Fix ACL Permissions for events and blocks
+
+Fix: Safety fix: the IDS no longer blocks inside the **adminhtml** area to prevent lockouts
+
+New: Added Full Admin Grids for **Intrusion Events** and **Blocked IPs** (with CRUD + mass delete).
+
+#v1.0.0
+
+Initial Release
+
 My initial release focuses on safe, composable primitives: request inspection, brute‑force throttling, IP blocking, honeypots, event logging, and admin/system configuration. It’s built to be production‑ready but conservative by default. You can extend each detector via DI.
 
 # Setup & usage
@@ -15,7 +35,7 @@ My initial release focuses on safe, composable primitives: request inspection, b
 
 
 
-# Roadmap & Feature Ideas (extensible via additional Detectors)
+# Roadmap & Feature Ideas
 
 
 - **GeoIP velocity checks**: sudden country jumps per session/IP.

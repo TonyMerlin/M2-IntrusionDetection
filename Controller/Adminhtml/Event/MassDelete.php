@@ -1,10 +1,12 @@
 <?php
 namespace Merlin\IntrusionDetection\Controller\Adminhtml\Event;
+
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
 use Merlin\IntrusionDetection\Model\ResourceModel\EventLog\CollectionFactory;
 use Magento\Framework\Controller\ResultFactory;
+
 class MassDelete extends Action
 {
     const ADMIN_RESOURCE = 'Merlin_IntrusionDetection::events';

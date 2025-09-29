@@ -2,7 +2,6 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
 
-  <!-- Intrusion Events -->
   <table name="merlin_intrusion_event" resource="default" engine="innodb" comment="Intrusion Events">
     <column name="event_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="ID"/>
     <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At (UTC)"/>
@@ -12,37 +11,29 @@
     <column name="detector" xsi:type="varchar" length="128" nullable="false" comment="Detector Name"/>
     <column name="severity" xsi:type="varchar" length="32" nullable="false" default="low" comment="Severity"/>
     <column name="details" xsi:type="text" nullable="true" comment="Details"/>
-
     <constraint xsi:type="primary"><column name="event_id"/></constraint>
 
-    <!-- New, collision-free index names -->
-    <index referenceId="MERLIN_ID_EVT_IP">
-      <column name="ip"/>
-    </index>
-    <index referenceId="MERLIN_ID_EVT_CREATED_AT">
-      <column name="created_at"/>
-    </index>
+    <index referenceId="MERLIN_ID_EVT_IP"><column name="ip"/></index>
+    <index referenceId="MERLIN_ID_EVT_CREATED_AT"><column name="created_at"/></index>
+
+    <!-- Disable legacy IDs that may exist from prior builds -->
+    <index referenceId="MERLIN_INTRUSION_EVENT_IP" disabled="true"><column name="ip"/></index>
+    <index referenceId="MERLIN_INTRUSION_EVENT_CREATED_AT" disabled="true"><column name="created_at"/></index>
   </table>
 
-  <!-- Blocked IPs -->
   <table name="merlin_blocked_ip" resource="default" engine="innodb" comment="Blocked IPs">
     <column name="block_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="ID"/>
     <column name="ip" xsi:type="varchar" length="45" nullable="false" comment="Blocked IP"/>
     <column name="reason" xsi:type="varchar" length="255" nullable="true" comment="Reason"/>
     <column name="created_at" xsi:type="timestamp" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At (UTC)"/>
     <column name="expires_at" xsi:type="timestamp" nullable="true" comment="Expires At (UTC)"/>
-
     <constraint xsi:type="primary"><column name="block_id"/></constraint>
 
-    <!-- Single UNIQUE index on IP; MySQL will use it for lookups as well -->
-    <index referenceId="MERLIN_ID_BLOCKED_IP_UNIQ" indexType="UNIQUE">
-      <column name="ip"/>
-    </index>
+    <index referenceId="MERLIN_ID_BLOCKED_IP_UNIQ" indexType="UNIQUE"><column name="ip"/></index>
+    <index referenceId="MERLIN_ID_BLOCKED_IP_EXPIRES"><column name="expires_at"/></index>
 
-    <!-- Fresh name for expires index to avoid collisions -->
-    <index referenceId="MERLIN_ID_BLOCKED_IP_EXPIRES">
-      <column name="expires_at"/>
-    </index>
+    <!-- Disable legacy IDs -->
+    <index referenceId="MERLIN_BLOCKED_IP_IP" disabled="true"><column name="ip"/></index>
+    <index referenceId="MERLIN_BLOCKED_IP_EXPIRES_AT" disabled="true"><column name="expires_at"/></index>
   </table>
-
 </schema>

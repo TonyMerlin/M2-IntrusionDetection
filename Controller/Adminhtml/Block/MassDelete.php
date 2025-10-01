@@ -33,6 +33,7 @@ class MassDelete extends Action
             $this->messageManager->addNoticeMessage(__('No records selected.'));
         }
 
+        // IMPORTANT: use the inherited factory from AbstractAction
         return $this->resultRedirectFactory->create()->setPath('*/*/');
     }
 }
